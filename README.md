@@ -1,14 +1,14 @@
-# Please Note, this read me is a WIP and will be improved upon.
+# Please note, this read me is a WIP and will be improved upon.
 
 # auto-app-version
-An Azure DevOps build and release task designed to automatically increment your app's version number. 
-
+An Azure DevOps build and release task designed to automatically increment your app's version number.  
+  
 ## So what is this? Simply put...
-Don't worry about incrementing you'r apps version number everytime you commit/integrate and deploy small patch updates, there's going to be a lot of them, let AutoAppVersion increment the patch version for you. When you are ready to release a new Major or Minor version, simply update those version segmants like normal in your csporj file, and AutoAppVersion will reset the patch segment for you.
-
-## Qucik Guide: Do as I say!!!
+Don't worry about incrementing you're app's version number everytime you commit/integrate and deploy small patch updates, there's going to be a lot of them. Let AutoAppVersion increment the patch version for you. When you are ready to release a new Major or Minor version, simply update those version segmants like normal in your csporj file, and AutoAppVersion will reset the patch segment for you.
+  
+## Quick Setup Guide: Do as I say!!!
 Of course I don't expect you to do as I say, just do the next steps to get the thing working as quickly as possible. After that, have a play.
-
+  
 1. In your csproj file make sure you have a version element, if you're looking for this package then you will most likely know exactly what that is. If not, it should be defined something like this:  
   
 ```xml
@@ -24,7 +24,7 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
   
 2. Tell AutoAppVersion which version segment you want to automate, in this case we'll automate the patch segment. replace the patch value (third value) with a $ symbol like so `<Version>1.0.$</Version>`  
   
-3. Add the extension from the MarketPlace, and add the task to your primary agent job. Make sure this task is before any other task that depend on the apps version.  
+3. Add the extension from the MarketPlace, and add the task to your primary agent job. Make sure this task is before any other task that depends on the app's version information.  
   
 ---  
   
@@ -33,8 +33,8 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
 ---  
   
 4. Setup some variables.  
-  A variable to hold the the latest version number (Initiate with 1.0.0 or whatever your current version number is). This variable will be automatically updated by AutoAppVersion.  
-  A variable for your DevOps Personal Access Token. Why do I need a PAT? AutoAppVersion has to update your VersionVariable via the DevOps api. Your PAT is required for authentication.
+  * A variable to hold the the latest version number (Initiate with 1.0.0 or whatever your current version number is). This variable will be automatically updated by AutoAppVersion.  
+  * A variable for your DevOps Personal Access Token. Why do I need a PAT? AutoAppVersion has to update your VersionVariable via the DevOps api. Your PAT is required for authentication.
   
   
 ---  
@@ -45,9 +45,9 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
   
   
 5. Populate the task inputs:  
-select the target csproj.  
-Set the name of the variable to hold the version (in the screenshot above I used AutoVersion)  
-Provide your DevOps personal access token. I have used a variable to hold this value (DevOpsPAT in the above screen shot)  
+* select the target csproj.  
+* Set the name of the variable used to hold the version (in the screenshot above I used AutoVersion)  
+* Provide your DevOps personal access token. I have used a variable to hold this value (DevOpsPAT in the above screen shot)  
   
 ---
   
@@ -55,7 +55,9 @@ Provide your DevOps personal access token. I have used a variable to hold this v
   
 ---
   
-## Qucik Guide Complete!!!
+6. Commit your project changes, and let your pipeline do the rest.
+  
+## Quick Setup Guide Complete!!!
   
 ## What exactly is going on?  
 AutoAppVersion will read your project's csproj file looking for the version element. Depending on the the version format, and a version number saved from your previous build, a new version number will be generated. The new version number will be saved back into the build's csproj file. Additional pipeline tasks such as deploying and packing will now make use of the new, incremented version number inside the csproj file.  
@@ -127,8 +129,8 @@ Here's what happens if you mask your version number any other way then outlined 
 `<Version>1.$.$</Version>` = `1.0.0`, `1.1.0`, `1.2.0`, `1.3.0`  
 `<Version>$.$.$</Version>` = `0.0.0`, `1.0.0`, `2.0.0`, `3.0.0`  
   
-Notice how a second or third masked values are always 0, this is because a higher priority segment value has been increased, AutoAppVersion will always set lower priority, masked segments to 0 if it detects a higher priority segment's value has increased.  
+Notice how second or third masked values are always 0, this is because a higher priority segment value has been increased, AutoAppVersion will always set lower priority, masked segments to 0 if it detects a higher priority segment's value has increased.  
   
   
 ## WIP Notes
-Your csproj file may have multiple `<PropertyGroup>` elements. This isn't a problem, however AutoAppVersion will only check the first instance of a `<PropertyGroup>` element for the version element. Long story short, put your package info `<PropertyGroup>` element with the varsion element before any others.
+Your csproj file may have multiple `<PropertyGroup>` elements. This isn't a problem, however AutoAppVersion will only check the first instance of a `<PropertyGroup>` element for the version element. Long story short, put your package info `<PropertyGroup>` element with the version element before any others.
