@@ -1,4 +1,4 @@
-# Please Note, this read me is a WIP and will be impoved upon.
+# Please Note, this read me is a WIP and will be improved upon.
 
 # auto-app-version
 An Azure DevOps build and release task designed to automatically increment your app's version number. 
