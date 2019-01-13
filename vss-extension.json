@@ -1,0 +1,64 @@
+{
+  "manifestVersion": 1,
+  "id": "thatblokecalledjay-autoappversion",
+  "name": "Auto App Version",
+  "version": "1.0.2",
+  "publisher": "ThatBlokeCalledJay",
+  "public": false,
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "scope": [
+    "vso.build"
+  ],
+  "description": "A build and release task for automaticaly incrementing an app's version",
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "tags": [
+    "Build",
+    "Version",
+    "Increment",
+    "Pipeline",
+    "Azure DevOps"
+  ],
+  "content": {
+    "license": {
+      "path": "license.txt"
+    },
+    "details": {
+      "path": "readme.md"
+    }
+  },
+  "icons": {
+    "default": "icon.png"
+  },
+  "contributions": [
+    {
+      "id": "AutoAppVersion",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "AutoAppVersion"
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "AutoAppVersion/task.ps1"
+    },
+    {
+      "path": "AutoAppVersion/task.json"
+    },
+    {
+      "path": "AutoAppVersion/icon.png"
+    },
+    {
+      "path": "AutoAppVersion/ps_modules/vststasksdk"
+    }
+  ]
+}
