@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "thatblokecalledjay-autoappversion",
   "name": "Auto App Version",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "ThatBlokeCalledJay",
   "public": false,
   "targets": [
@@ -10,6 +10,21 @@
       "id": "Microsoft.VisualStudio.Services"
     }
   ],
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/ThatBlokeCalledJay/auto-app-version"
+  },
+  "links": {
+    "getstarted": {
+      "uri": "https://github.com/ThatBlokeCalledJay/auto-app-version/wiki"
+    },
+    "repository": {
+      "uri": "hhttps://github.com/ThatBlokeCalledJay/auto-app-version"
+    },
+    "issues": {
+      "uri": "https://github.com/ThatBlokeCalledJay/auto-app-version/issues"
+    }
+  },
   "scope": [
     "vso.build"
   ],
