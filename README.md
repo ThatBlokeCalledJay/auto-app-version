@@ -26,20 +26,34 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
   
 3. Add the extension from the MarketPlace, and add the task to your primary agent job. Make sure this task is before any other task that depend on the apps version.  
   
+---  
+  
 ![Agent Job Task](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/task.png?raw=true "Agent job task")
-
+  
+---  
+  
 4. Setup some variables.  
   A variable to hold the the latest version number. This variable will be automatically updated.  
   A variable for your DevOps Personal Access Token.  
   
-![Variables](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/variables.png?raw=true "Variables")
+  
+---  
+  
+![Variables](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/variables.png?raw=true "Variables")  
+  
+---  
+  
   
 5. Task inputs:  
 select the target csproj.  
 Set the name of the variable to hold the version (in the screenshot above I used AutoVersion)  
 Provide your DevOps personal access token. I have used a variable to hold this value (DevOpsPAT in the above screen shot)  
   
+---
+  
 ![AutoAppVersion Task Inputs](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/inputs.png?raw=true "AutoAppVersion task inputs")  
+  
+---
   
 ## What?  
 AutoAppVersion will read your project's csproj file looking for the version element. Depending on the the version format, and a version number saved from your previous build, a new version number will be generated. The new version number will be saved back into the build's csproj file. Additional pipeline tasks such as deploying and packing will now make use of the new, incremented version number inside the csproj file.  
