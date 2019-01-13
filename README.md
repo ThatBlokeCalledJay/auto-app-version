@@ -33,8 +33,8 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
 ---  
   
 4. Setup some variables.  
-  A variable to hold the the latest version number. This variable will be automatically updated.  
-  A variable for your DevOps Personal Access Token.  
+  A variable to hold the the latest version number (Initiate with 1.0.0 or whatever your current version number is). This variable will be automatically updated by AutoAppVersion.  
+  A variable for your DevOps Personal Access Token. Why do I need a PAT? AutoAppVersion has to update your VersionVariable via the DevOps api. Your PAT is required for authentication.
   
   
 ---  
@@ -44,7 +44,7 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
 ---  
   
   
-5. Task inputs:  
+5. Populate the task inputs:  
 select the target csproj.  
 Set the name of the variable to hold the version (in the screenshot above I used AutoVersion)  
 Provide your DevOps personal access token. I have used a variable to hold this value (DevOpsPAT in the above screen shot)  
@@ -55,13 +55,15 @@ Provide your DevOps personal access token. I have used a variable to hold this v
   
 ---
   
-## What?  
+## Qucik Guide Complete!!!
+  
+## What exactly is going on?  
 AutoAppVersion will read your project's csproj file looking for the version element. Depending on the the version format, and a version number saved from your previous build, a new version number will be generated. The new version number will be saved back into the build's csproj file. Additional pipeline tasks such as deploying and packing will now make use of the new, incremented version number inside the csproj file.  
   
-## Why?
+## Why would anyone need this?
 I simply made this because I kept on forgetting to update my version number whenever I commited a change. Utilising Azure DevOps CD/CI pipelines, and in some cases automatically re-packing and pushing packages meant, that if (and when) I forgot to update the version number, the release pipeline would fail because "Package with same name and Version number already exists"
 
-## How?
+## How do you go about setting this up?
 Set your version number in your project's csproj file. It is here you will also define a format (or mask). Typically if you are planning on packaging your project, you will have a `<PropertyGroup>` element which defines certain package information. It's the `<Version>` element we care about.
   
 ```xml
@@ -87,6 +89,10 @@ Decide which segment of your version number you want to automate. Though, you ca
     ...
 </Project>
 ```
+  
+## General automated behaviour
+  
+An automated segment can mutate in two ways. Standard incrementation, 1, 2, 3, 4 and reset. Reset sets the segment back to 0.
   
 Incrementing higher priority segments manually will result in lower priority, automated segments being set back to 0.
   
