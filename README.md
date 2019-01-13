@@ -40,13 +40,13 @@ Decide which segment of your version number you want to automate. Though, you ca
 ```
   
 Incrementing higher priority segments manually will result in lower priority, automated segments being set back to 0.
-
-Major (Highest Priority)
-Minor (Medium Priority)
-Patch (Lowest Priority)
   
-If we take the version format example above `1.0.$`. The final version output will always start with `1.0.` and patch will be incremented. Lets say you've deplyed, several times without manually updating your version number, and the current version number is `1.0.14`, incrementing either Major or Minor segments will cause the patch value to return to 0:  
-
+Major (Highest Priority)  
+Minor (Medium Priority)  
+Patch (Lowest Priority)  
+  
+If we take the version format example above `1.0.$`. The final version output will always start with `1.0.` and patch will be incremented. Lets say you've deplyed, several times without manually updating your version number, and the current version number is `1.0.14`, incrementing either Major or Minor segments will cause the patch value to return to 0:
+  
 e.g `<Version>1.1.$</Version>` the next output number will be `1.1.0`, `1.1.1`, `1.1.2` etc  
   
 the same will hapen if you increment the Major version:  
@@ -68,6 +68,8 @@ Here's what happens if you mask your version number any other way then outlined 
 `<Version>$.5.8</Version>` = `0.5.8`, `1.5.8`, `2.5.8`, `3.5.8`  
   
 ## Multi mask...
-`<Version>$.5.$</Version>` = `0.5.0`, `1.5.0`, `2.5.0`, `3.5.0`
+`<Version>$.5.$</Version>` = `0.5.0`, `1.5.0`, `2.5.0`, `3.5.0`  
 `<Version>1.$.$</Version>` = `1.0.0`, `1.1.0`, `1.2.0`, `1.3.0`  
 `<Version>$.$.$</Version>` = `0.0.0`, `1.0.0`, `2.0.0`, `3.0.0`  
+  
+Notice how a second or third masked values are always 0, this is because a higher priority segment value has been increased, AutoAppVersion will always set lower priority, masked segments to 0 if it detects a higher priority segment's value has increased.
