@@ -114,15 +114,15 @@ Major (Highest Priority)
 Minor (Medium Priority)  
 Patch (Lowest Priority)  
   
-If we take the version format example above `1.0.$`. The final version output will always start with `1.0.` and patch will be incremented. Lets say you've deplyed, several times without manually updating your version number, and the current version number is `1.0.14`, incrementing either Major or Minor segments will cause the patch value to return to 0:
+If we take the version format example above `1.0.$`. The final version output will always start with `1.0.` and patch will be incremented. Lets say you've deployed, several times without manually updating your Major and Minor version segments, and the current version number is `1.0.14`, incrementing either Major or Minor segments now will cause the patch value to return to 0.  
   
-e.g `<Version>1.1.$</Version>` the next output number will be `1.1.0`, `1.1.1`, `1.1.2` etc  
+e.g from `<Version>1.0.$</Version>` to `<Version>1.1.$</Version>` the next output number will be `1.1.0`, `1.1.1`, `1.1.2` etc.  
   
 the same will hapen if you increment the Major version:  
   
-e.g `<Version>2.1.$</Version>` the next output number will be `2.1.0`, `2.1.1`, `2.1.2` etc  
+e.g from `<Version>1.1.$</Version>` to `<Version>2.1.$</Version>` the next output number will be `2.1.0`, `2.1.1`, `2.1.2` etc.  
   
-Any version segment that is hardcoded is still your responsibility to maintain. In the examples above, if you had changed yopur minor version number from `<Version>1.0.$</Version>` to `<Version>1.1.$</Version>`, then you wanted to increase the major version to 2, it is your responsibility to reset the minor version e.g `<Version>2.0.$</Version>`. AutoAppVersion will automatically acknowledge this change and set the patch value back to 0 on the next deployment.  
+Any version segment that is hardcoded is still your responsibility to maintain. In the examples above, if you had changed your minor version number from `<Version>1.0.$</Version>` to `<Version>1.1.$</Version>`, then you wanted to increase the major version to 2, it is your responsibility to reset the minor version e.g `<Version>2.0.$</Version>`. AutoAppVersion will automatically acknowledge this change and set the patch value back to 0 on the next deployment.  
   
 the newly calculated version number is saved back to the project file, ultimatly overwriting the mask. Don't be alarmend by this, these files are only for use during this particular build or release.  
   
