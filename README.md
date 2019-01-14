@@ -3,12 +3,12 @@ An Azure DevOps build and release task designed to automatically increment your 
   
 ### Please note, this read me is a WIP and will be improved upon.
   
-### Project ToDo
+## TODO:
 
   - [ ] Better Docs.
   - [ ] Implement error handling and better user feedback.
   
-### This Is Currently For:
+## This Is Currently Used With:
   - Azure DevOps Pipelines.
   - DotNet Core Projects written in C#.
   
