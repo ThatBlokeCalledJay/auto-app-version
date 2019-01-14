@@ -62,6 +62,8 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
 ## What exactly is going on?  
 AutoAppVersion will read your project's csproj file looking for the version element. Depending on the the version format, and a version number saved from your previous build, a new version number will be generated. The new version number will be saved back into the build's csproj file. Additional pipeline tasks such as deploying and packing will now make use of the new, incremented version number inside the csproj file.  
   
+Once that is complete, AutoAppVersion then updates your build's `VersionVariable` via the Azure DevOps Api (this is why your DevOps PAT is requird, for authenticating the request). If you keep an eye on your `VersionVariable` you will see it automaticvally increment after each build or release. 
+  
 ## Why would anyone need this?
 I simply made this because I kept on forgetting to update my version number whenever I commited a change. Utilising Azure DevOps CD/CI pipelines, and in some cases automatically re-packing and pushing packages meant, that if (and when) I forgot to update the version number, the release pipeline would fail because "Package with same name and Version number already exists"
 
