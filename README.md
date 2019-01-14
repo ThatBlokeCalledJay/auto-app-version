@@ -8,8 +8,9 @@ An Azure DevOps build and release task designed to automatically increment your 
   - [ ] Better Docs.
   - [ ] Implement error handling and better user feedback.
   
-## auto-app-version
-An Azure DevOps build and release task designed to automatically increment your app's version number.  
+### This Is Currently For:
+  - Azure DevOps Pipelines.
+  - DotNet Core Projects written in C#.
   
 ## So what is this? Simply put...
 Don't worry about incrementing you're app's version number everytime you commit/integrate and deploy small patch updates, there's going to be a lot of them. Let AutoAppVersion increment the patch version for you. When you are ready to release a new Major or Minor version, simply update those version segmants like normal in your csporj file, and AutoAppVersion will reset the patch segment for you.
