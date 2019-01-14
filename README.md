@@ -13,8 +13,8 @@ An Azure DevOps build and release task designed to automatically increment your 
   - Azure DevOps Pipelines.
   - DotNet Core Projects written in C#.
   
-## So what is this? Simply put...
-Don't worry about incrementing you're app's version number everytime you commit/integrate and deploy small patch updates, there's going to be a lot of them. Let AutoAppVersion increment the patch version for you. When you are ready to release a new Major or Minor version, simply update those version segmants like normal in your csporj file, and AutoAppVersion will reset the patch segment for you.
+## So what is this? Example...
+Don't worry about incrementing you're app's version number everytime you commit/integrate and deploy small patch updates, there's going to be a lot of them. Let AutoAppVersion increment the patch version for you. When you are ready to release a new Major or Minor version, simply update those version segmants like normal in your csporj file, AutoAppVersion will set the patch segment back to 0 for you. This is really handy when your BuildPipeline automatically packs and pushes NuGet packages. No more "Package with same name and Version number already exists" because you forgot to update the version.  
   
 ## Quick Setup Guide: Do as I say!!!
 Of course I don't expect you to do as I say, just do the next steps to get the thing working as quickly as possible. After that, have a play.
