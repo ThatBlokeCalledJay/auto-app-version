@@ -1,6 +1,14 @@
-# Please note, this read me is a WIP and will be improved upon.
+## AutoAppVersion
+An Azure DevOps build and release task designed to automatically increment your app's version number.  
+  
+### Please note, this read me is a WIP and will be improved upon.
+  
+### Project ToDo
 
-# auto-app-version
+  - [ ] Better Docs.
+  - [ ] Implement error handling and better user feedback.
+  
+## auto-app-version
 An Azure DevOps build and release task designed to automatically increment your app's version number.  
   
 ## So what is this? Simply put...
