@@ -43,8 +43,8 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
 ---  
   
 4. Setup some variables.  
-  * A variable to hold the the latest version number (Initiate with 1.0.0 or whatever your current version number is). This variable will be automatically updated by AutoAppVersion.  
-  * A variable for your [DevOps Personal Access Token](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=vsts). Why do you need a PAT? AutoAppVersion has to update your `VersionVariable` via the DevOps api. Your PAT is required for authentication.
+  * A `VersionVariable` to hold the the latest version number (Initiate with 1.0.0 or whatever your current version number is). This variable will be automatically updated by AutoAppVersion. In the screenshot below, I have called mine `AutoVersion`.  
+  * A variable to hold your [DevOps Personal Access Token](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=vsts). Why do you need a PAT? AutoAppVersion has to update your `VersionVariable` via the DevOps api. Your PAT is required for authentication.
   
   
 ---  
