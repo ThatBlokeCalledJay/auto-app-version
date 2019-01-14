@@ -148,4 +148,4 @@ Notice how second or third masked values are always 0, this is because a higher 
 Your csproj file may have multiple `<PropertyGroup>` elements. This isn't a problem, however AutoAppVersion will only check the first instance of a `<PropertyGroup>` element for the version element. Long story short, put your package info `<PropertyGroup>` element with the version element before any others.
 
 ## Important Shout Out:
-I just want to say thanks to [Maik Vandergaag](https://github.com/maikvandergaag/msft-extensions/tree/develop/azuredevops/versioncounter) your project (and api request code) really helped me out.
+I just want to say thanks to [Maik van der Gaag](https://github.com/maikvandergaag/msft-extensions/tree/develop/azuredevops/versioncounter) your project (and api request code) really helped me out.
