@@ -34,7 +34,7 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
   
 4. Setup some variables.  
   * A variable to hold the the latest version number (Initiate with 1.0.0 or whatever your current version number is). This variable will be automatically updated by AutoAppVersion.  
-  * A variable for your DevOps Personal Access Token. Why do I need a PAT? AutoAppVersion has to update your VersionVariable via the DevOps api. Your PAT is required for authentication.
+  * A variable for your [DevOps Personal Access Token](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=vsts). Why do you need a PAT? AutoAppVersion has to update your `VersionVariable` via the DevOps api. Your PAT is required for authentication.
   
   
 ---  
@@ -46,8 +46,8 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
   
 5. Populate the task inputs:  
 * select the target csproj.  
-* Set the name of the variable used to hold the version (in the screenshot above I used AutoVersion)  
-* Provide your DevOps personal access token. I have used a variable to hold this value (DevOpsPAT in the above screen shot)  
+* Set the name of the `VersionVariable` used to store the current version (in the screenshot above I used AutoVersion)  
+* Provide your [DevOps personal access token](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=vsts). I have used a variable to hold this value (DevOpsPAT in the above screen shot)  
   
 ---
   
@@ -96,7 +96,7 @@ Decide which segment of your version number you want to automate. Though, you ca
   
 An automated segment can mutate in two ways. Standard incrementation, 1, 2, 3, 4 and reset. Reset sets the segment back to 0.
   
-Incrementing higher priority segments manually will result in lower priority, automated segments being set back to 0.
+Incrementing higher priority segments will result in lower priority, automated segments being set back to 0.
   
 Major (Highest Priority)  
 Minor (Medium Priority)  
