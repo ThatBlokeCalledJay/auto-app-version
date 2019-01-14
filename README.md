@@ -45,7 +45,7 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
   
   
 5. Populate the task inputs:  
-* select the target csproj.  
+* select the target csproj. This will be the file where you just set your version mask.
 * Set the name of the `VersionVariable` used to store the current version (in the screenshot above I used AutoVersion)  
 * Provide your [DevOps personal access token](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=vsts). I have used a variable to hold this value (DevOpsPAT in the above screen shot)  
   
