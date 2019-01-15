@@ -59,6 +59,8 @@ Of course I don't expect you to do as I say, just do the next steps to get the t
 * Set the name of the `VersionVariable` used to store the current version (in the screenshot above I used AutoVersion)  
 * Provide your [DevOps personal access token](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=vsts). I have used a variable to hold this value (DevOpsPAT in the above screen shot)  
   
+Note: The minimum permissions required for yout Personal Access Token are **Build:** Read & Execute.  
+  
 ---
   
 ![AutoAppVersion Task Inputs](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/inputs.png?raw=true "AutoAppVersion task inputs")  
