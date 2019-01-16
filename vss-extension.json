@@ -2,9 +2,9 @@
   "manifestVersion": 1,
   "id": "thatblokecalledjay-autoappversion",
   "name": "Auto App Version",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "publisher": "ThatBlokeCalledJay",
-  "public": false,
+  "public": true,
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"

@@ -17,147 +17,235 @@ Write-Output "Project Name         : $($projectName)";
 Write-Output "Project Id           : $($projectId)";
 Write-Output "BuildId              : $($buildId)";
 
+Write-Host "=============================================================================="
+
+# ========================= Get Mask From Project File
+
+Write-Host "Reading project file: $($ProjectFile)."
+
+$csp = [xml](Get-Content $ProjectFile)
+
+$numberOfPropertyGroups = $csp.CreateNavigator().Evaluate('count(//PropertyGroup)')
+
+if ($numberOfPropertyGroups -eq 1) {
+    $propertyGroup = $csp.Project.PropertyGroup
+}
+else {
+    Write-Warning "Multiple <PropertyGroup> elements found. Targeting first instance."
+    $propertyGroup = $csp.Project.PropertyGroup[0]
+}
+
+if (-not $propertyGroup.Version) {
+    Write-Error "<Version> element not found in the first instance of <PropertyGroup>. Check your csproj file."
+    exit 0
+}
+
+$versionMask = $propertyGroup.Version 
+
+# ========================= Validate Mask Value
+
+$maskItems = $versionMask.split('.')
+
+if ($maskItems.Count -gt 3 -or $maskItems.Count -lt 3) {
+    Write-Error "Your version number mask needs to be in the following format 'X.X.X' where X is an integer or the $ symbol. Expected 'X.X.X' but got '$($versionMask)'"
+    exit 0
+}
+
+if ($maskItems[2] -like '*-*') {
+    Write-Error "Unsupported Mask Value: AutoAppVersion currently doesn't support pre-release suffix. Expected 'X.X.X' but got '$($versionMask)'. Check your csproj file."
+    exit 0
+}
+
+$maskMajorVersionVar = $maskItems[0]
+$maskMinorVersionVar = $maskItems[1]
+$maskPatchVersionVar = $maskItems[2]
+
+if(-not ($maskMajorVersionVar -eq "$" -or $maskMinorVersionVar -eq "$" -or $maskPatchVersionVar -eq "$")) {
+    Write-Warning "Your project file's version has been found '$($versionMask)' but the version value doen't contain any masked elements. e.g. '$($maskMajorVersionVar).$($maskMinorVersionVar).$'"
+}else{
+    Write-Host "Valid Version Mask Found: '$($versionMask)'"
+}
+
+# ========================= Get Build And VersionVariable From DevOps via APi
+
 $buildUri = "$($devOpsUri)$($projectName)/_apis/build/builds/$($buildId)?api-version=4.1"
 
 # enconding PAT
 $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "", $DevOpsPAT)))
 $devOpsHeader = @{Authorization = ("Basic {0}" -f $base64AuthInfo)}
 
+Write-Host "Trying to retrieve build with the url: $($buildUri)."
+
 $buildDef = Invoke-RestMethod -Uri $buildUri -Method Get -ContentType "application/json" -Headers $devOpsHeader
 
-if ($buildDef) {
+if (-not ($buildDef -and $buildDef.definition)) {
+    Write-Error "Unexpected response from Azure DevOps Api. Please check your parameters including your PAT."
+    exit 0
+}
 
+$definitionId = $buildDef.definition.id
+$defUri = "$($devOpsUri)$($projectName)/_apis/build/definitions/$($definitionId)?api-version=4.1"
 
-    $definitionId = $buildDef.definition.id
-    $defUri = "$($devOpsUri)$($projectName)/_apis/build/definitions/$($definitionId)?api-version=4.1"
+Write-Host "Trying to retrieve the build definition with the url: $($defUri)."
+$definition = Invoke-RestMethod -Method Get -Uri $defUri -Headers $devOpsHeader -ContentType "application/json"
 
-    Write-Host "Trying to retrieve the build definition with the url: $($defUri)."
-    $definition = Invoke-RestMethod -Method Get -Uri $defUri -Headers $devOpsHeader -ContentType "application/json"
+$currentVersion = $definition.variables.$VersionVariable.Value
 
-    $myValue = $definition.variables.$VersionVariable.Value
+if (!$currentVersion ) {
+    Write-Warning "Initial value of VersionVariable '$($VersionVariable)' is empty. '0.0.0' will be used."
+    $currentVersion = "0.0.0"
+}
+else {
+    Write-Host "VersionVariable '$($VersionVariable)' current value: $($currentVersion)."
+}
 
-    # ==========================================================
+# ========================= Validate Current Version
 
-    if (!$myValue ) {
-        $myValue  = "0.0.0"
+$currentVersionItems = $currentVersion.split('.')
+   
+if ($currentVersionItems.Count -gt 3 -or $currentVersionItems.Count -lt 3) {
+    Write-Error "Your VersionVariable value needs to be in the following format 'X.X.X' where X is an integer or the $ symbol. Expected 'X.X.X' but got '$($currentVersion)'"
+    exit 0
+}
+
+if ($currentVersionItems[2] -like '*-*') {
+    Write-Error "Unsported VersionVariable Value: AutoAppVersion currently doesn't support pre-release suffix. Expected 'X.X.X' but got '$($currentVersion)'"
+    exit 0
+}
+
+$currentMajorVersionVar = $currentVersionItems[0]
+$currentMinorVersionVar = $currentVersionItems[1]
+$currentPatchVersionVar = $currentVersionItems[2]
+
+if (-not [string]($currentMajorVersionVar -as [int])) {
+    Write-Error "Unexpected current Major version. Expected integer but got '$($currentMajorVersionVar)'"
+    exit 0
+}
+
+if (-not [string]($currentMinorVersionVar -as [int])) {
+    Write-Error "Unexpected current Minor version. Expected integer but got '$($currentMinorVersionVar)'"
+    exit 0
+}
+
+if (-not [string]($currentPatchVersionVar -as [int])) {
+    Write-Error "Unexpected current Patch version. Expected integer but got '$($currentPatchVersionVar)'"
+    exit 0
+}
+
+$currentMajorVersion = [convert]::ToInt32($currentMajorVersionVar, 10)
+$currentMinorVersion = [convert]::ToInt32($currentMinorVersionVar, 10)
+$currentPatchVersion = [convert]::ToInt32($currentPatchVersionVar, 10)
+
+# ========================= Mutate
+
+$nextMajorVersion = 0
+$nextMinorVersion = 0
+$nextPatchVersion = 0
+
+$resetPatch = $false
+$resetMinor = $false
+    
+if ($maskMajorVersionVar -eq "$") {
+    $nextMajorVersion = $currentMajorVersion + 1
+    $resetPatch = $true
+    $resetMinor = $true
+}
+else {
+    if (-not [string]($maskMajorVersionVar -as [int])) {
+        Write-Error "Unexpected Mask Major version. Expected integer but got '$($maskMajorVersionVar)'"
+        exit 0
     }
 
-    Write-Host "VersionVariable '$($VersionVariable)' current value: $($myValue)."
-
-    $last = $myValue
-        
-    $csprojFile = $ProjectFile
+    $nextMajorVersion = [convert]::ToInt32($maskMajorVersionVar, 10)
     
-    Write-Host "Reading project file: $($csprojFile)."
-
-    $csp = [xml](Get-Content $csprojFile)
-    
-    $numberOfPropertyGroups = $csp.CreateNavigator().Evaluate('count(//PropertyGroup)')
-    
-    if ($numberOfPropertyGroups -eq 1) {
-        $propertyGroup = $csp.Project.PropertyGroup
-    }
-    else {
-        Write-Host "Multiple PropertyGroup elements found. Targeting first instance."
-        $propertyGroup = $csp.Project.PropertyGroup[0]
-    }
-    
-    $version = $propertyGroup.Version 
-    
-    $lastItems = $last.split('.')
-    
-    $lastMajorVersionVar = $lastItems[0]
-    $lastMinorVersionVar = $lastItems[1]
-    $lastPatchVersionVar = $lastItems[2]
-    
-    $lastMajorVersion = [convert]::ToInt32($lastMajorVersionVar, 10)
-    $lastMinorVersion = [convert]::ToInt32($lastMinorVersionVar, 10)
-    $lastPatchVersion = [convert]::ToInt32($lastPatchVersionVar, 10)
-    
-    $items = $version.split('.')
-    
-    $majorVersionVar = $items[0]
-    $minorVersionVar = $items[1]
-    $patchVersionVar = $items[2]
-    
-    $nextMajorVersion = 0
-    $nextMinorVersion = 0
-    $nextPatchVersion = 0
-    
-    $resetPatch = $false
-    $resetMinor = $false
-    
-    if ($majorVersionVar -eq "$") {
-        $nextMajorVersion = $lastMajorVersion + 1
+    if ($nextMajorVersion -gt $currentMajorVersion) {
+        Write-Host "Observed Major version increase. Any lower priority masked values will be set back to 0"
         $resetPatch = $true
         $resetMinor = $true
     }
-    else {
-        $nextMajorVersion = [convert]::ToInt32($majorVersionVar, 10)
-    
-        if ($nextMajorVersion -gt $lastMajorVersion) {
-            $resetPatch = $true
-        }
+
+    if ($nextMajorVersion -lt $currentMajorVersion) {
+        Write-Warning "Observed Major version has decreased. This indicates your project file has been updated with a value '$($nextMajorVersion)' lower than the current value '$($currentMajorVersion)'."
     }
+}
     
-    if ($minorVersionVar -eq "$") {
-        if ($resetMinor) {
-            $nextMinorVersion = 0
-        }
-        else {
-            $nextMinorVersion = $lastMinorVersion + 1
-        }
+if ($maskMinorVersionVar -eq "$") {
+    if ($resetMinor) {
+        $nextMinorVersion = 0
+    }
+    else {
+        $nextMinorVersion = $currentMinorVersion + 1
+    }
+    $resetPatch = $true
+}
+else {
+    if (-not [string]($maskMinorVersionVar -as [int])) {
+        Write-Error "Unexpected Mask Minor version. Expected integer but got '$($maskMinorVersionVar)'"
+        exit 0
+    }
+
+    $nextMinorVersion = [convert]::ToInt32($maskMinorVersionVar, 10)
+    
+    if ($nextMinorVersion -gt $currentMinorVersion) {
+        Write-Host "Observed Minor version number increase. Any lower priority masked values will be set back to 0"
         $resetPatch = $true
     }
-    else {
-        $nextMinorVersion = [convert]::ToInt32($minorVersionVar, 10)
-    
-        if ($nextMinorVersion -gt $lastMinorVersion) {
-            $resetPatch = $true
-        }
+
+    if ($nextMinorVersion -lt $currentMinorVersion) {
+        Write-Warning "Observed Minor version has decreased. This indicates your project file has been updated with a value '$($nextMinorVersion)' lower than the current value '$($currentMinorVersion)'."
     }
-    
-    if ($patchVersionVar -eq "$") {
-        if ($resetPatch) {
-            $nextPatchVersion = 0
-        }
-        else {
-            $nextPatchVersion = $lastPatchVersion + 1
-        }
-        
-    }
-    else {
-        $nextPatchVersion = [convert]::ToInt32($patchVersionVar, 10)
-    }
-    
-    $versionPattern="$($majorVersionVar).$($minorVersionVar).$($patchVersionVar)"
-
-    Write-Host "> Version Pattern: $($versionPattern)" -ForegroundColor Cyan
-    Write-Host "> Current App version: $($lastMajorVersion).$($lastMinorVersionVar).$($lastPatchVersionVar)" -ForegroundColor Yellow
-    Write-Host "> New App Version: $($nextMajorVersion).$($nextMinorVersion).$($nextPatchVersion)" -ForegroundColor Green
-    
-    $newVersion = "$($nextMajorVersion).$($nextMinorVersion).$($nextPatchVersion)"
-
-    $propertyGroup.Version = $newVersion
-
-    # ==========================================================
-
-    Write-Host "Updating VersionVariable '$($VersionVariable)'."
-
-    $definition.variables.$VersionVariable.Value = $newVersion
-
-    $definitionJson = $definition | ConvertTo-Json -Depth 50 -Compress
-    
-    Invoke-RestMethod -Method Put -Uri $defUri -Headers $devOpsHeader -ContentType "application/json" -Body $definitionJson | Out-Null
-
-    Write-Host "VersionVariable '$($VersionVariable)' updated."
-
-    # ==========================================================
-
-    Write-Host "Updating Project file. Replacing '$($versionPattern)' with '$($newVersion)'"
-
-    $csp.Save($csprojFile) 
-
-    Write-Host "Project file updated."
-
 }
+    
+if ($maskPatchVersionVar -eq "$") {
+    if ($resetPatch) {
+        $nextPatchVersion = 0
+    }
+    else {
+        $nextPatchVersion = $currentPatchVersion + 1
+    }
+        
+}
+else {
+    if (-not [string]($maskPatchVersionVar -as [int])) {
+        Write-Error "Unexpected Mask Patch version. Expected integer but got '$($maskPatchVersionVar)'"
+        exit 0
+    }
+
+    $nextPatchVersion = [convert]::ToInt32($maskPatchVersionVar, 10)
+
+    if ($nextPatchVersion -lt $currentPatchVersion) {
+        Write-Warning "Observed Patch version has decreased. This indicates your project file has been updated with a value '$($nextPatchVersion)' lower than the current value '$($currentPatchVersion)'."
+    }
+}
+    
+$versionPattern = "$($maskMajorVersionVar).$($maskMinorVersionVar).$($maskPatchVersionVar)"
+
+Write-Host "=============================================================================="
+
+Write-Host "> Version Pattern: $($versionPattern)" -ForegroundColor Cyan
+Write-Host "-> Current App version: $($currentMajorVersion).$($currentMinorVersion).$($currentPatchVersion)" -ForegroundColor Yellow
+Write-Host "--> New App Version: $($nextMajorVersion).$($nextMinorVersion).$($nextPatchVersion)" -ForegroundColor Green
+
+Write-Host "=============================================================================="
+
+$newVersion = "$($nextMajorVersion).$($nextMinorVersion).$($nextPatchVersion)"
+
+# ========================= Save Via Api
+
+$definition.variables.$VersionVariable.Value = $newVersion
+
+$definitionJson = $definition | ConvertTo-Json -Depth 50 -Compress
+
+Write-Host "Trying to update VersionVariable '$($VersionVariable)' with the url: $($defUri)."
+
+Invoke-RestMethod -Method Put -Uri $defUri -Headers $devOpsHeader -ContentType "application/json" -Body $definitionJson | Out-Null
+
+Write-Host "VersionVariable '$($VersionVariable)' updated."
+
+# ========================= Save Locally
+
+Write-Host "Updating Project file '$($ProjectFile)'. Replacing '$($versionPattern)' with '$($newVersion)'"
+
+$csp.Save($ProjectFile) 
+
+Write-Host "Project file updated '$($ProjectFile)'."
