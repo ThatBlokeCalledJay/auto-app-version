@@ -35,6 +35,17 @@ Follow these steps to get things rolling as quickly as possible. After that, hav
   
 2. Tell AutoAppVersion which version segment you want to automate (major, minor, patch), in this case we'll automate the patch segment. replace the patch value (third value) with a $ symbol like so `<Version>1.0.$</Version>`.You have now created a mask.  
   
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        ...
+        ...
+        <Version>1.0.$</Version>
+    </PropertyGroup>
+    ...
+</Project>
+```
+  
 3. Add this extension from the MarketPlace, then add the task to your primary agent job. Make sure this task is before any other task that depends on the app's version information.  
   
 ---  
