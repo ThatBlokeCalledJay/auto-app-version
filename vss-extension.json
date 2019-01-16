@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "thatblokecalledjay-autoappversion",
   "name": "Auto App Version",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "ThatBlokeCalledJay",
   "public": true,
   "targets": [

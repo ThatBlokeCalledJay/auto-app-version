@@ -4,7 +4,7 @@
   "friendlyName": "Auto app version",
   "description": "A build and release task for automaticaly incrementing an app's version",
   "author": "ThatBlokeCalledJay",
-  "helpMarkDown": "",
+  "helpMarkDown": "[More Information](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki)",
   "category": "Utility",
   "visibility": [
     "Build",
@@ -14,7 +14,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "2"
+    "Patch": "3"
   },
   "minimumAgentVersion": "2.117.0",
   "instanceNameFormat": "Auto app version",
