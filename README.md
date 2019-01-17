@@ -3,9 +3,12 @@ An Azure DevOps build and release task designed to automatically increment your 
   
 ### Please note, this read me is a WIP and will be improved upon.
   
-## TODO:
+#### TODO:
 
   - [ ] Clearer docs.
+    
+#### DONE:
+  
   - [x] Implement error handling and better user feedback.
   - [x] Options to set FileVersion and AssemblyVersion.
   - [x] Provide option to stop on certain warnings.
