@@ -7,8 +7,8 @@ An Azure DevOps build and release task designed to automatically increment your 
 
   - [ ] Clearer docs.
   - [x] Implement error handling and better user feedback.
-  - [ ] Options to set FileVersion and AssemblyVersion.
-  - [ ] Provide option to stop on certain warnings.
+  - [x] Options to set FileVersion and AssemblyVersion.
+  - [x] Provide option to stop on certain warnings.
   
 ## This Is Currently Used With:
   - Azure DevOps Pipelines.
