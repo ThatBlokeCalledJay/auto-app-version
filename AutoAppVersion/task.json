@@ -5,7 +5,7 @@
   "description": "A build and release task for automaticaly incrementing an app's version",
   "author": "ThatBlokeCalledJay",
   "helpMarkDown": "[More Information](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki)",
-  "category": "Utility",
+  "category": "Azure Pipelines",
   "visibility": [
     "Build",
     "Release"
@@ -14,40 +14,74 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "3"
+    "Patch": "4"
   },
   "minimumAgentVersion": "2.117.0",
   "instanceNameFormat": "Auto app version",
   "groups": [
     {
-      "name": "version",
-      "displayName": "Versioning",
-      "isExpanded": true
+      "name": "other",
+      "displayName": "Other Options",
+      "isExpanded": false
+    },
+    {
+      "name": "warnings",
+      "displayName": "Warning Actions",
+      "isExpanded": false
     }],
   "inputs": [
     {
       "name": "ProjectFile",
-      "label": "The .csproj file to be read and updated",
+      "label": "Project file",
       "type": "filePath",
       "required": true,
-      "groupName": "version",
-      "helpMarkDown": "The .csproj file which will supply the versioning pattern and will be updated with the newly incremented version" 
+      "helpMarkDown": "The .csproj file which will supply the version mask and will be updated with the newly incremented version." 
     },
     {
       "name": "VersionVariable",
-      "label": "The saved version variable",
+      "label": "Version variable",
       "type": "string",
       "required": true,
-      "groupName": "version",
-      "helpMarkDown": "The name of the saved variable. The value should be in the format '1.6.3'." 
+      "helpMarkDown": "The name of the variable which will hold the current version." 
     },
     {
       "name": "DevOpsPAT",
-      "label": "Azure DevOps Personal Access Token",
+      "label": "Azure DevOps personal access token (PAT)",
       "type": "string",
       "required": true,
-      "groupName": "version",
-      "helpMarkDown": "Your personal access token for Azure DevOps"
+      "helpMarkDown": "Your personal access token for Azure DevOps."
+    },
+    {
+      "name": "SetAssemblyVersion",
+      "label": "Set Assembly Version",
+      "type": "boolean",
+      "required": true,
+      "groupName": "other",
+      "helpMarkDown": "Apply the version number to your project file's <AssemblyVersion> element (if present). Output format will be 'N.N.N.0'"
+    },
+    {
+      "name": "SetFileVersion",
+      "label": "Set File Version",
+      "type": "boolean",
+      "required": true,
+      "groupName": "other",
+      "helpMarkDown": "Apply the version number to your project file's <FileVersion> element (if present). Output format will be 'N.N.N.0'"
+    },
+    {
+      "name": "StopOnNoMask",
+      "label": "Stop On No Mask",
+      "type": "boolean",
+      "required": true,
+      "groupName": "warnings",
+      "helpMarkDown": "Stop the build if your project file's version isn't masked (e.g none of the values have been replaced with a $ symbol)."
+    },
+    {
+      "name": "StopOnDowngrade",
+      "label": "Stop On Downgrade",
+      "type": "boolean",
+      "required": true,
+      "groupName": "warnings",
+      "helpMarkDown": "Stop the build if a version downgrade is detected."
     }
   ],
   "dataSourceBindings": [],
