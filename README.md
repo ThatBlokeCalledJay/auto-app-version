@@ -79,7 +79,7 @@ Note: The minimum permissions required for your Personal Access Token are **Buil
   
 ---
   
-![AutoAppVersion Task Inputs](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/inputs.png?raw=true "AutoAppVersion task inputs")  
+![AutoAppVersion Task Inputs](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/inputsv104.png?raw=true "AutoAppVersion task inputs")  
   
 ---
   
