@@ -1,5 +1,5 @@
-## AutoAppVersion
-An Azure DevOps build and release task designed to automatically increment your app's version number.
+## AutoAppVersion.
+Automatic application versioning that not only persits between builds, but also doesn't depend on the build number. Below is an example showing how this extension could be used.  r.
 
-### Neep Help!
-Check out the [getting started](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Getting-Started) page.
+### Using AutoAppVersion.
+Check out the [getting started](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Getting-Started) wiki.
