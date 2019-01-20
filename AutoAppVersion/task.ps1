@@ -58,7 +58,6 @@ if ($numberOfPropertyGroups -eq 1) {
     $propertyGroup = $csp.Project.PropertyGroup
 }
 else {
-    Write-Warning "Multiple <PropertyGroup> elements found. Targeting first instance."
     $propertyGroup = $csp.Project.PropertyGroup[0]
 }
 
