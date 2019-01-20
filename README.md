@@ -54,7 +54,7 @@ Follow these steps to get things rolling as quickly as possible. After that, hav
   
 ---  
   
-![Agent Job Task](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/task.png?raw=true "Agent job task")
+![Agent Job Task](https://thatblokecalledjay.blob.core.windows.net/public-images/aav/task.png?raw=true "Agent job task")
   
 ---  
   
@@ -65,7 +65,7 @@ Follow these steps to get things rolling as quickly as possible. After that, hav
   
 ---  
   
-![Variables](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/variables.png?raw=true "Variables")  
+![Variables](https://thatblokecalledjay.blob.core.windows.net/public-images/aav/variables.png?raw=true "Variables")  
   
 ---  
   
@@ -79,7 +79,7 @@ Note: The minimum permissions required for your Personal Access Token are **Buil
   
 ---
   
-![AutoAppVersion Task Inputs](https://github.com/ThatBlokeCalledJay/auto-app-version/blob/master/Resources/inputsv104.png?raw=true "AutoAppVersion task inputs")  
+![AutoAppVersion Task Inputs](https://thatblokecalledjay.blob.core.windows.net/public-images/aav/inputs.png?raw=true "AutoAppVersion task inputs")  
   
 ---
   
