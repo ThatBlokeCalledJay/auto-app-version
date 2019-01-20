@@ -106,7 +106,6 @@ else {
 
 $buildUri = "$($devOpsUri)$($projectName)/_apis/build/builds/$($buildId)?api-version=4.1"
 
-# enconding PAT
 $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "", $DevOpsPAT)))
 $devOpsHeader = @{Authorization = ("Basic {0}" -f $base64AuthInfo)}
 
@@ -241,7 +240,6 @@ else {
         else {
             Write-Warning "Observed Minor version has decreased. This indicates your project file has been updated with a value '$($nextMinorVersion)' lower than the current value '$($currentMinorVersion)'."
         }
-        
     }
 }
     
@@ -252,7 +250,6 @@ if ($maskPatchVersionVar -eq "$") {
     else {
         $nextPatchVersion = $currentPatchVersion + 1
     }
-        
 }
 else {
     if (-not [string]($maskPatchVersionVar -as [int])) {
@@ -270,7 +267,6 @@ else {
         else {
             Write-Warning "Observed Patch version has decreased. This indicates your project file has been updated with a value '$($nextPatchVersion)' lower than the current value '$($currentPatchVersion)'."    
         }
-        
     }
 }
 
