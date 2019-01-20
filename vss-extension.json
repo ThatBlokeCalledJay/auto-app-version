@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "thatblokecalledjay-autoappversion",
   "name": "Auto App Version",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "publisher": "ThatBlokeCalledJay",
   "public": true,
   "targets": [
@@ -16,10 +16,10 @@
   },
   "links": {
     "getstarted": {
-      "uri": "https://github.com/ThatBlokeCalledJay/auto-app-version/wiki"
+      "uri": "https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Getting-Started"
     },
     "repository": {
-      "uri": "hhttps://github.com/ThatBlokeCalledJay/auto-app-version"
+      "uri": "https://github.com/ThatBlokeCalledJay/auto-app-version"
     },
     "issues": {
       "uri": "https://github.com/ThatBlokeCalledJay/auto-app-version/issues"
@@ -33,6 +33,8 @@
     "Azure Pipelines"
   ],
   "tags": [
+    "Auto",
+    "Automatic",
     "Build",
     "Version",
     "Increment",
