@@ -39,7 +39,8 @@
     "Version",
     "Increment",
     "Pipeline",
-    "Azure DevOps"
+    "Azure DevOps",
+    ".Net Core"
   ],
   "content": {
     "license": {
