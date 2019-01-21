@@ -46,6 +46,13 @@ Write-Output "BuildId              : $($buildId)";
 
 Write-Host "=============================================================================="
 
+$nextMajorVersion = 0
+$nextMinorVersion = 0
+$nextPatchVersion = 0
+
+$resetPatch = $false
+$resetMinor = $false
+
 # ========================= Get Mask From Project File
 
 Write-Host "Reading project file: $($ProjectFile)."
@@ -125,12 +132,17 @@ $definition = Invoke-RestMethod -Method Get -Uri $defUri -Headers $devOpsHeader 
 
 $currentVersion = $definition.variables.$VersionVariable.Value
 
+if ($null -eq $currentVersion) {
+    Write-Error "VersionVariable '$($VersionVariable)' Not found. Check build definition contains variable '$($VersionVariable)'."
+    exit 0
+}
+
 if (!$currentVersion) {
-    Write-Warning "Initial value of VersionVariable '$($VersionVariable)' is empty. '0.0.0' will be used."
+    Write-Warning "VersionVariable '$($VersionVariable)' is empty. Session will initiate with value '0.0.0'"
     $currentVersion = "0.0.0"
 }
 else {
-    Write-Host "VersionVariable '$($VersionVariable)' current value: $($currentVersion)."
+    Write-Host "VersionVariable '$($VersionVariable)' Found: '$($currentVersion)' (current value)"
 }
 
 # ========================= Validate Current Version
@@ -171,13 +183,6 @@ $currentMinorVersion = [convert]::ToInt32($currentMinorVersionVar, 10)
 $currentPatchVersion = [convert]::ToInt32($currentPatchVersionVar, 10)
 
 # ========================= Mutate
-
-$nextMajorVersion = 0
-$nextMinorVersion = 0
-$nextPatchVersion = 0
-
-$resetPatch = $false
-$resetMinor = $false
     
 if ($maskMajorVersionVar -eq "$") {
     $nextMajorVersion = $currentMajorVersion + 1
@@ -193,18 +198,18 @@ else {
     $nextMajorVersion = [convert]::ToInt32($maskMajorVersionVar, 10)
     
     if ($nextMajorVersion -gt $currentMajorVersion) {
-        Write-Host "Observed Major version increase. Any lower priority masked values will be set back to 0"
+        Write-Host "Observed Major version increased. Any lower priority, masked values will be reset."
         $resetPatch = $true
         $resetMinor = $true
     }
 
     if ($nextMajorVersion -lt $currentMajorVersion) {
         if ($StopOnDowngrade) {
-            Write-Error "Observed Major version has decreased. This indicates your project file has been updated with a value '$($nextMajorVersion)' lower than the current value '$($currentMajorVersion)'. See task option 'Stop On Downgrade'."
+            Write-Error "Version Downgrade Detected: Major version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
             exit 0
         }
         else {
-            Write-Warning "Observed Major version has decreased. This indicates your project file has been updated with a value '$($nextMajorVersion)' lower than the current value '$($currentMajorVersion)'."
+            Write-Warning "Version Downgrade Detected: Major version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
         }
     }
 }
@@ -227,17 +232,17 @@ else {
     $nextMinorVersion = [convert]::ToInt32($maskMinorVersionVar, 10)
     
     if ($nextMinorVersion -gt $currentMinorVersion) {
-        Write-Host "Observed Minor version number increase. Any lower priority masked values will be set back to 0"
+        Write-Host "Observed Minor version number increased. Lower priority, masked values will be reset."
         $resetPatch = $true
     }
 
     if ($nextMinorVersion -lt $currentMinorVersion -and (-not $resetMinor)) {
         if ($StopOnDowngrade) {
-            Write-Error "Observed Minor version has decreased. This indicates your project file has been updated with a value '$($nextMinorVersion)' lower than the current value '$($currentMinorVersion)'. See task option 'Stop On Downgrade'."
+            Write-Error "Version Downgrade Detected: Minor version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
             exit 0
         }
         else {
-            Write-Warning "Observed Minor version has decreased. This indicates your project file has been updated with a value '$($nextMinorVersion)' lower than the current value '$($currentMinorVersion)'."
+            Write-Warning "Version Downgrade Detected: Minor version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
         }
     }
 }
@@ -260,11 +265,11 @@ else {
 
     if ($nextPatchVersion -lt $currentPatchVersion -and (-not $resetPatch)) {
         if ($StopOnDowngrade) {
-            Write-Error "Observed Patch version has decreased. This indicates your project file has been updated with a value '$($nextPatchVersion)' lower than the current value '$($currentPatchVersion)'. See task option 'Stop On Downgrade'."    
+            Write-Error "Version Downgrade Detected: Patch version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
             exit 0
         }
         else {
-            Write-Warning "Observed Patch version has decreased. This indicates your project file has been updated with a value '$($nextPatchVersion)' lower than the current value '$($currentPatchVersion)'."    
+            Write-Warning "Version Downgrade Detected: Patch version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
         }
     }
 }
@@ -272,12 +277,11 @@ else {
 Write-Host "=============================================================================="
 
 $versionPattern = "$($maskMajorVersionVar).$($maskMinorVersionVar).$($maskPatchVersionVar)"
+$newVersion = "$($nextMajorVersion).$($nextMinorVersion).$($nextPatchVersion)"
 
 Write-Host "> Version Pattern: $($versionPattern)" -ForegroundColor Cyan
-Write-Host "-> Current App version: $($currentMajorVersion).$($currentMinorVersion).$($currentPatchVersion)" -ForegroundColor Yellow
-Write-Host "--> New App Version: $($nextMajorVersion).$($nextMinorVersion).$($nextPatchVersion)" -ForegroundColor Green
-
-$newVersion = "$($nextMajorVersion).$($nextMinorVersion).$($nextPatchVersion)"
+Write-Host "-> Current App version: $($currentVersion)" -ForegroundColor Yellow
+Write-Host "--> New App Version: $($newVersion)" -ForegroundColor Green
 
 Write-Host "=============================================================================="
 
@@ -286,11 +290,11 @@ Write-Host "====================================================================
 $definition.variables.$VersionVariable.Value = $newVersion
 
 $definitionJson = $definition | ConvertTo-Json -Depth 50 -Compress
-
+    
 Write-Host "Trying to update VersionVariable '$($VersionVariable)' with the url: $($defUri)."
-
+    
 Invoke-RestMethod -Method Put -Uri $defUri -Headers $devOpsHeader -ContentType "application/json" -Body $definitionJson | Out-Null
-
+    
 Write-Host "VersionVariable '$($VersionVariable)' updated."
 
 # ========================= Save Locally
