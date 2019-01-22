@@ -3,7 +3,7 @@ Automatic application versioning that not only persits between builds, but also 
   
 > Note: AutoAppVersion has been designed initially to work with Azure DevOps pipelines and DotNet Core projects.
   
-### Set your version mask inside your app's project file.  
+### Set your version mask inside your app's project file (.csproj or .vbproj).  
   
 `<Version>1.0.$</Version>`  
   
