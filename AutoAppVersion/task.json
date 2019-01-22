@@ -1,6 +1,6 @@
 {
   "id": "5c7da804-4989-4055-b709-444c6b6be219",
-  "name": "autoappversion",
+  "name": "AutoAppVersion",
   "friendlyName": "Auto app version",
   "description": "A build and release task for automaticaly incrementing an app's version",
   "author": "ThatBlokeCalledJay",
@@ -14,7 +14,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "9"
+    "Patch": "10"
   },
   "minimumAgentVersion": "2.117.0",
   "instanceNameFormat": "Auto app version",
@@ -35,7 +35,7 @@
       "label": "Project file",
       "type": "filePath",
       "required": true,
-      "helpMarkDown": "The .csproj file which will supply the version mask and will be updated with the newly incremented version." 
+      "helpMarkDown": "The project file (.csproj or .vbproj) which will supply the version mask and will be updated with the newly incremented version." 
     },
     {
       "name": "VersionVariable",
@@ -57,7 +57,7 @@
       "type": "boolean",
       "required": true,
       "groupName": "other",
-      "helpMarkDown": "Apply the version number to your project file's <AssemblyVersion> element (if present). Output format will be 'N.N.N.0'"
+      "helpMarkDown": "Apply the version number to your project file's AssemblyVersion element (if present). Output format will be 'N.N.N.0'"
     },
     {
       "name": "SetFileVersion",
@@ -65,7 +65,7 @@
       "type": "boolean",
       "required": true,
       "groupName": "other",
-      "helpMarkDown": "Apply the version number to your project file's <FileVersion> element (if present). Output format will be 'N.N.N.0'"
+      "helpMarkDown": "Apply the version number to your project file's FileVersion element (if present). Output format will be 'N.N.N.0'"
     },
     {
       "name": "StopOnNoMask",

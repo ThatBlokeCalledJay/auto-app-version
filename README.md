@@ -3,7 +3,7 @@ Automatic application versioning that not only persits between builds, but also 
   
 > Note: AutoAppVersion has been designed initially to work with Azure DevOps pipelines and DotNet Core projects.
   
-### Set your version mask inside your app's project file file.  
+### Set your version mask inside your app's project file.  
   
 `<Version>1.0.$</Version>`  
   
@@ -40,6 +40,6 @@ AAV writes the new version number directly into your current build's project fil
 ### Extra stuff.
 You have options which can stop the build if AAV detects certain potential problems. You can also tell AAV to set your project's FileVersion and AssemblyVersion based on the build's generated version number.  
   
-### Let's do this.
+### Need help setting up?
 Check out the [wiki](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Getting-Started) on getting started.  
   

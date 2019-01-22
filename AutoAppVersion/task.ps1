@@ -69,7 +69,7 @@ else {
 }
 
 if (-not $propertyGroup.Version) {
-    Write-Error "<Version> element not found in the first instance of <PropertyGroup>. Check your csproj file."
+    Write-Error "<Version> element not found in the first instance of <PropertyGroup>. Check your project file."
     exit 0
 }
 
@@ -87,7 +87,7 @@ if ($maskItems.Count -gt 3 -or $maskItems.Count -lt 3) {
 }
 
 if ($maskItems[2] -like '*-*') {
-    Write-Error "Unsupported Mask Value: AutoAppVersion currently doesn't support pre-release suffix. Expected 'X.X.X' but got '$($versionMask)'. Check your csproj file."
+    Write-Error "Unsupported Mask Value: AutoAppVersion currently doesn't support pre-release suffix. Expected 'X.X.X' but got '$($versionMask)'. Check your project file."
     exit 0
 }
 
@@ -205,11 +205,11 @@ else {
 
     if ($nextMajorVersion -lt $currentMajorVersion) {
         if ($StopOnDowngrade) {
-            Write-Error "Version Downgrade Detected: Major version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
+            Write-Error "Version Downgrade Detected: Major version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File: $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
             exit 0
         }
         else {
-            Write-Warning "Version Downgrade Detected: Major version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
+            Write-Warning "Version Downgrade Detected: Major version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File: $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
         }
     }
 }
@@ -238,11 +238,11 @@ else {
 
     if ($nextMinorVersion -lt $currentMinorVersion -and (-not $resetMinor)) {
         if ($StopOnDowngrade) {
-            Write-Error "Version Downgrade Detected: Minor version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
+            Write-Error "Version Downgrade Detected: Minor version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File: $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
             exit 0
         }
         else {
-            Write-Warning "Version Downgrade Detected: Minor version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
+            Write-Warning "Version Downgrade Detected: Minor version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File: $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
         }
     }
 }
@@ -265,11 +265,11 @@ else {
 
     if ($nextPatchVersion -lt $currentPatchVersion -and (-not $resetPatch)) {
         if ($StopOnDowngrade) {
-            Write-Error "Version Downgrade Detected: Patch version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
+            Write-Error "Version Downgrade Detected: Patch version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File: $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
             exit 0
         }
         else {
-            Write-Warning "Version Downgrade Detected: Patch version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File (csproj): $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
+            Write-Warning "Version Downgrade Detected: Patch version has decreased. This indicates your project file has been updated with a value lower than $($VersionVariable)'s current value. Project File: $($versionMask) $($VersionVariable) (current): ($($currentVersion))."
         }
     }
 }
