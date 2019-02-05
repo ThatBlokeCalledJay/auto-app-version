@@ -1,8 +1,8 @@
 {
   "id": "5c7da804-4989-4055-b709-444c6b6be219",
   "name": "AutoAppVersion",
-  "friendlyName": "Auto app version",
-  "description": "A build and release task for automaticaly incrementing an app's version",
+  "friendlyName": "Auto App Version",
+  "description": "A build and release task for automatically incrementing an app's version",
   "author": "ThatBlokeCalledJay",
   "helpMarkDown": "[More Information](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki)",
   "category": "Azure Pipelines",
@@ -14,7 +14,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "10"
+    "Patch": "11"
   },
   "minimumAgentVersion": "2.117.0",
   "instanceNameFormat": "Auto app version",
@@ -68,6 +68,13 @@
       "helpMarkDown": "Apply the version number to your project file's FileVersion element (if present). Output format will be 'N.N.N.0'"
     },
     {
+      "name": "EnvVarName",
+      "label": "Environment Variable Name [Optional]",
+      "type": "other",
+      "required": false,
+      "helpMarkDown": "Specify an environment variable to be set with the new version number. The variable and it's value will be available to all proceeding tasks."
+    },
+    {
       "name": "StopOnNoMask",
       "label": "Stop On No Mask",
       "type": "boolean",
@@ -82,6 +89,14 @@
       "required": true,
       "groupName": "warnings",
       "helpMarkDown": "Stop the build if a version downgrade is detected."
+    },
+    {
+      "name": "StopOnInvalidEVarName",
+      "label": "Stop On Invalid Environment Variable Name",
+      "type": "boolean",
+      "required": true,
+      "groupName": "warnings",
+      "helpMarkDown": "Stop the build if an environment variable name has been specified, but it is invalid. Validation: Must be less than 256 characters and contain no whitespace."
     }
   ],
   "dataSourceBindings": [],

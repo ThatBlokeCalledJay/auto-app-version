@@ -31,6 +31,11 @@ $StopOnNoMask = ConvertTo-Boolean ($StopOnNoMaskString)
 $StopOnDowngradeString = Get-VstsInput -Name StopOnDowngrade  -Require
 $StopOnDowngrade = ConvertTo-Boolean($StopOnDowngradeString)
 
+$StopOnInvalidEVarNameString = Get-VstsInput -Name StopOnInvalidEVarName  -Require
+$StopOnInvalidEVarName = ConvertTo-Boolean($StopOnInvalidEVarNameString)
+
+$EnvironmentVariableName= Get-VstsInput -Name EnvVarName
+
 $devOpsUri = $env:SYSTEM_TEAMFOUNDATIONSERVERURI
 $projectName = $env:SYSTEM_TEAMPROJECT
 $projectId = $env:SYSTEM_TEAMPROJECTID 
@@ -44,6 +49,10 @@ Write-Output "Project Name         : $($projectName)";
 Write-Output "Project Id           : $($projectId)";
 Write-Output "BuildId              : $($buildId)";
 
+# ###########################################################################
+# ###########################################################################
+# ###########################################################################
+
 Write-Host "=============================================================================="
 
 $nextMajorVersion = 0
@@ -52,6 +61,24 @@ $nextPatchVersion = 0
 
 $resetPatch = $false
 $resetMinor = $false
+
+$setEnvironmentVar = $false
+
+# ========================= Check And Validate Environment Variable
+
+if ($null -ne $EnvironmentVariableName -and $EnvironmentVariableName.length -gt 0) {
+    if ($EnvironmentVariableName.length -lt 256 -and $EnvironmentVariableName -match "^[^\s]+$") {
+        $setEnvironmentVar = $true
+    }else{
+        
+        if($StopOnInvalidEVarName){
+            Write-Error "Specified Environment Variable Name is not valid '$($EnvironmentVariableName)'. Name must be less than 256 characters and not contain whitespace."
+            exit 0
+        }else{
+            Write-Warning "Specified Environment Variable Name is not valid '$($EnvironmentVariableName)'. Name must be less than 256 characters and not contain whitespace."
+        }
+    }
+}
 
 # ========================= Get Mask From Project File
 
@@ -98,7 +125,7 @@ $maskPatchVersionVar = $maskItems[2]
 if (-not ($maskMajorVersionVar -eq "$" -or $maskMinorVersionVar -eq "$" -or $maskPatchVersionVar -eq "$")) {    
     if ($StopOnNoMask) {
         Write-Error "Your project file's version has been found '$($versionMask)' but the version value doesn't contain any masked elements. e.g. '$($maskMajorVersionVar).$($maskMinorVersionVar).$'. See task option 'Stop On No Mask'."
-        exit 0;
+        exit 0
     }
     else {
         Write-Warning "Your project file's version has been found '$($versionMask)' but the version value doesn't contain any masked elements. e.g. '$($maskMajorVersionVar).$($maskMinorVersionVar).$'"
@@ -318,3 +345,10 @@ if ($null -ne $assemblyVersion -and $SetAssemblyVersion) {
 $csp.Save($ProjectFile) 
 
 Write-Host "Project file updated."
+
+# ========================= Set Environment Variable
+
+if($setEnvironmentVar){
+    Write-Host "##vso[task.setvariable variable=$($EnvironmentVariableName);]$newVersion"
+    Write-Host "Environment Variable '$($EnvironmentVariableName)' Set: '$($newVersion)'"
+}

@@ -38,7 +38,9 @@ AAV will detect the major version has increased, and restart the masked incremen
 AAV writes the new version number directly into your current build's project file allowing any following tasks to utilize the project version like normal. The new version is also saved to a variable defined in your build definition.  
   
 ### Extra stuff.
-You have options which can stop the build if AAV detects certain potential problems. You can also tell AAV to set your project's FileVersion and AssemblyVersion based on the build's generated version number.  
+- You have options which can stop the build if AAV detects certain problems.  
+- You can tell AAV to set your project's FileVersion and AssemblyVersion based on the build's generated version number.  
+- You have the option to specify and set an environment variable with the latest version number which can be used by proceeding tasks in your build.
   
 ### Need help setting up?
 Check out the [wiki](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Getting-Started) on getting started.  
