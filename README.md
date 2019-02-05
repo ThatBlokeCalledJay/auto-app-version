@@ -44,4 +44,3 @@ AAV writes the new version number directly into your current build's project fil
   
 ### Need help setting up?
 Check out the [wiki](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Getting-Started) on getting started.  
-  

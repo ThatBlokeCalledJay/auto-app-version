@@ -14,7 +14,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "11"
+    "Patch": "12"
   },
   "minimumAgentVersion": "2.117.0",
   "instanceNameFormat": "Auto app version",
@@ -70,8 +70,9 @@
     {
       "name": "EnvVarName",
       "label": "Environment Variable Name [Optional]",
-      "type": "other",
+      "type": "string",
       "required": false,
+      "groupName": "other",
       "helpMarkDown": "Specify an environment variable to be set with the new version number. The variable and it's value will be available to all proceeding tasks."
     },
     {
