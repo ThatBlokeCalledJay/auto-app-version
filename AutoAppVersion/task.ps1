@@ -320,7 +320,7 @@ $definitionJson = $definition | ConvertTo-Json -Depth 50 -Compress
     
 Write-Host "Trying to update VersionVariable '$($VersionVariable)' with the url: $($defUri)."
     
-Invoke-RestMethod -Method Put -Uri $defUri -Headers $devOpsHeader -ContentType "application/json" -Body $definitionJson | Out-Null
+Invoke-RestMethod -Method Put -Uri $defUri -Headers $devOpsHeader -ContentType "application/json" -Body ([System.Text.Encoding]::UTF8.GetBytes($definitionJson)) | Out-Null
     
 Write-Host "VersionVariable '$($VersionVariable)' updated."
 
