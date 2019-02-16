@@ -37,6 +37,8 @@ AAV will detect the major version has increased, and restart the masked incremen
   
 AAV writes the new version number directly into your current build's project file allowing any following tasks to utilize the project version like normal. The new version is also saved to a variable defined in your build definition.  
   
+> **Note:** If you are unable to set a version mask inside your project file *(Ref: NETSDK1 Invalid NuGet version string)*, you can use the `Version Mask Override` field to specify the mask in your build task. For more help [click here](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Unable-to-Set-Version-Mask-in-Project-File)
+  
 ### Extra stuff.
 - You have options which can stop the build if AAV detects certain problems.  
 - You can tell AAV to set your project's FileVersion and AssemblyVersion based on the build's generated version number.  
