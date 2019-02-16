@@ -77,11 +77,11 @@
     },
     {
       "name": "VersionMaskOverride",
-      "label": "Version mask override [optional]",
+      "label": "Version mask override",
       "type": "string",
       "required": false,
       "groupName": "other",
-      "helpMarkDown": "Provide a mask to merge with your project file's existing version. [Click here for more help](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Unable-to-Set-Version-Mask-in-Project-File)"
+      "helpMarkDown": "Provide a version mask to merge with your project file's existing version. [Click here for more help](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Unable-to-Set-Version-Mask-in-Project-File)"
     },
     {
       "name": "StopOnNoMask",

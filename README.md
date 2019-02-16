@@ -6,7 +6,7 @@ Automatic application versioning that not only persits between builds, but also 
 
 > **Important:** These docs have been updated, if you've been having difficulties setting a version mask in your project file, apply the changes below (don't panic, it's dead quick and simple).  
 
-### Make sure your project file (.csproj or .vbproj) has a Version element  
+### Make sure your project file (.csproj or .vbproj) has a version element  
 
 `<Version>1.0.0</Version>`  
 
@@ -60,7 +60,7 @@ Check out the [wiki](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki
 - [AutoAppVersion](https://github.com/ThatBlokeCalledJay/auto-app-version)  
 - [SetJsonProperty](https://github.com/ThatBlokeCalledJay/set-json-property)  
   
-### On Azure Marketplace
+### On Visual Studio Marketplace
 
 - [ThatBlokeCalledJay](https://marketplace.visualstudio.com/publishers/ThatBlokeCalledJay)
 - [AutoAppVersion](https://marketplace.visualstudio.com/items?itemName=ThatBlokeCalledJay.thatblokecalledjay-autoappversion)  
