@@ -46,3 +46,15 @@ AAV writes the new version number directly into your current build's project fil
   
 ### Need help setting up?
 Check out the [wiki](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Getting-Started) on getting started.  
+
+### On GitHub
+
+- [ThatBlokeCalledJay](https://github.com/ThatBlokeCalledJay)
+- [AutoAppVersion](https://github.com/ThatBlokeCalledJay/auto-app-version)  
+- [SetJsonProperty](https://github.com/ThatBlokeCalledJay/set-json-property)  
+  
+### On Azure Marketplace
+
+- [ThatBlokeCalledJay](https://marketplace.visualstudio.com/publishers/ThatBlokeCalledJay)
+- [AutoAppVersion](https://marketplace.visualstudio.com/items?itemName=ThatBlokeCalledJay.thatblokecalledjay-autoappversion)  
+- [SetJsonProperty](https://marketplace.visualstudio.com/items?itemName=ThatBlokeCalledJay.thatblokecalledjay-setjsonproperty)  
