@@ -3,9 +3,13 @@ Automatic application versioning that not only persits between builds, but also 
   
 > Note: AutoAppVersion has been designed initially to work with Azure DevOps pipelines and DotNet Core projects.
   
-### Set your version mask inside your app's project file (.csproj or .vbproj).  
-  
-`<Version>1.0.$</Version>`  
+> **Important:** These docs have been updated, if you've been having difficulties setting a version mask in your project file, apply the changes below (don't panic, it's dead quick and simple).  
+
+### Make sure your project file (.csproj or .vbproj) has a Version element.  
+`<Version>1.0.0</Version>`  
+
+### Set your Version Mask Override in AAV  
+`0.0.$`  
   
 AAV will start to automatically increment the masked version number on each build.
   
@@ -16,7 +20,7 @@ AAV will start to automatically increment the masked version number on each buil
   
 ### Increase your app's minor version.  
   
-`<Version>1.1.$</Version>`  
+`<Version>1.1.0</Version>`  
   
 AAV will detect the minor version has increased, and restart the masked incrementation from 0.  
   
@@ -26,7 +30,7 @@ AAV will detect the minor version has increased, and restart the masked incremen
 
 ### Increase your app's major version.  
   
-`<Version>2.0.$</Version>`  
+`<Version>2.0.0</Version>`  
   
 AAV will detect the major version has increased, and restart the masked incrementation from 0.  
 
@@ -37,8 +41,6 @@ AAV will detect the major version has increased, and restart the masked incremen
   
 AAV writes the new version number directly into your current build's project file allowing any following tasks to utilize the project version like normal. The new version is also saved to a variable defined in your build definition.  
   
-> **Note:** If you are unable to set a version mask inside your project file *(Ref: NETSDK1 Invalid NuGet version string)*, you can use the `Version Mask Override` field to specify the mask in your build task. For more help [click here](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Unable-to-Set-Version-Mask-in-Project-File).
-
 ### Extra stuff.
 - You have options which can stop the build if AAV detects certain problems.  
 - You can tell AAV to set your project's FileVersion and AssemblyVersion based on the build's generated version number.  
