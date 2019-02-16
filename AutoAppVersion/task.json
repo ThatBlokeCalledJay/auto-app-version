@@ -2,7 +2,7 @@
   "id": "5c7da804-4989-4055-b709-444c6b6be219",
   "name": "AutoAppVersion",
   "friendlyName": "Auto App Version",
-  "description": "A build and release task for automatically incrementing an app's version",
+  "description": "A build and release task for automatically incrementing an app's version.",
   "author": "ThatBlokeCalledJay",
   "helpMarkDown": "[More Information](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki)",
   "category": "Azure Pipelines",
@@ -14,10 +14,10 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "12"
+    "Patch": "14"
   },
   "minimumAgentVersion": "2.117.0",
-  "instanceNameFormat": "Auto app version",
+  "instanceNameFormat": "Auto App Version",
   "groups": [
     {
       "name": "other",
@@ -53,7 +53,7 @@
     },
     {
       "name": "SetAssemblyVersion",
-      "label": "Set Assembly Version",
+      "label": "Set assembly version",
       "type": "boolean",
       "required": true,
       "groupName": "other",
@@ -61,7 +61,7 @@
     },
     {
       "name": "SetFileVersion",
-      "label": "Set File Version",
+      "label": "Set file version",
       "type": "boolean",
       "required": true,
       "groupName": "other",
@@ -69,11 +69,19 @@
     },
     {
       "name": "EnvVarName",
-      "label": "Environment Variable Name [Optional]",
+      "label": "Environment variable name [optional]",
       "type": "string",
       "required": false,
       "groupName": "other",
       "helpMarkDown": "Specify an environment variable to be set with the new version number. The variable and it's value will be available to all proceeding tasks."
+    },
+    {
+      "name": "VersionMaskOverride",
+      "label": "Version mask override [optional]",
+      "type": "string",
+      "required": false,
+      "groupName": "other",
+      "helpMarkDown": "Provide a mask to merge with your project file's existing version. [Click here for more help](https://github.com/ThatBlokeCalledJay/auto-app-version/wiki/Unable-to-Set-Version-Mask-in-Project-File)"
     },
     {
       "name": "StopOnNoMask",

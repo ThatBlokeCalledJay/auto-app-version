@@ -36,6 +36,8 @@ $StopOnInvalidEVarName = ConvertTo-Boolean($StopOnInvalidEVarNameString)
 
 $EnvironmentVariableName= Get-VstsInput -Name EnvVarName
 
+$VersionMaskOverride = Get-VstsInput -Name VersionMaskOverride
+
 $devOpsUri = $env:SYSTEM_TEAMFOUNDATIONSERVERURI
 $projectName = $env:SYSTEM_TEAMPROJECT
 $projectId = $env:SYSTEM_TEAMPROJECTID 
@@ -104,6 +106,29 @@ $versionMask = $propertyGroup.Version
 $fileVersion = $propertyGroup.FileVersion
 $assemblyVersion = $propertyGroup.AssemblyVersion
 
+# ========================= Check Mask Override
+
+$useMaskOverride = $false
+$maskVariableItems = @()
+
+if ($null -ne $VersionMaskOverride -and $VersionMaskOverride.length -gt 0) {
+    $maskVariableItems = $VersionMaskOverride.split('.')    
+
+    if ($maskVariableItems.Count -ne 3) {
+        Write-Warning "Your version mask override value needs to be in the following format 'X.X.X' where X is an integer or the $ symbol. Expected 'X.X.X' but got '$($VersionMaskOverride)'"
+    }else{
+
+        for ($i = 0; $i -lt 3; $i++) {
+            if($maskVariableItems[$i] -eq "$"){
+                $useMaskOverride = $true;         
+            }
+        }        
+    }
+    if($useMaskOverride -eq $false){
+        Write-Warning "Your version mask override will not be applied. Could not find '$' in '$($VersionMaskOverride)'"
+    }
+}
+
 # ========================= Validate Mask Value
 
 $maskItems = $versionMask.split('.')
@@ -118,21 +143,32 @@ if ($maskItems[2] -like '*-*') {
     exit 0
 }
 
+if ($useMaskOverride) {
+    Write-Host "Applying mask override $($VersionMaskOverride)"
+    for ($i = 0; $i -lt 3; $i++) {
+        if($maskVariableItems[$i] -eq "$"){
+            $maskItems[$i] = "$"
+        }
+    }
+}
+
 $maskMajorVersionVar = $maskItems[0]
 $maskMinorVersionVar = $maskItems[1]
 $maskPatchVersionVar = $maskItems[2]
 
+$sessionMask = "$($maskMajorVersionVar).$($maskMinorVersionVar).$($maskPatchVersionVar)"
+
 if (-not ($maskMajorVersionVar -eq "$" -or $maskMinorVersionVar -eq "$" -or $maskPatchVersionVar -eq "$")) {    
     if ($StopOnNoMask) {
-        Write-Error "Your project file's version has been found '$($versionMask)' but the version value doesn't contain any masked elements. e.g. '$($maskMajorVersionVar).$($maskMinorVersionVar).$'. See task option 'Stop On No Mask'."
+        Write-Error "Your project file's version has been found '$($sessionMask)' but the version value doesn't contain any masked elements. e.g. '$($maskMajorVersionVar).$($maskMinorVersionVar).$'. See task option 'Stop On No Mask'."
         exit 0
     }
     else {
-        Write-Warning "Your project file's version has been found '$($versionMask)' but the version value doesn't contain any masked elements. e.g. '$($maskMajorVersionVar).$($maskMinorVersionVar).$'"
+        Write-Warning "Your project file's version has been found '$($sessionMask)' but the version value doesn't contain any masked elements. e.g. '$($maskMajorVersionVar).$($maskMinorVersionVar).$'"
     }
 }
 else {
-    Write-Host "Valid Version Mask Found: '$($versionMask)'"
+    Write-Host "Valid version mask found: '$($sessionMask)'"
 }
 
 # ========================= Get Build And VersionVariable From DevOps via APi
