@@ -1,6 +1,6 @@
 ## AutoAppVersion
 
-Automatic application versioning that not only persits between builds, but also doesn't depend on the build number. Below is an example showing how this extension could be used.  
+Automatic application versioning that not only persits between builds, but also doesn't depend on the build number. Below is an example showing how this extension could be used. Available on the [Visual Studio Marketplace](https://marketplace.visualstudio.com/publishers/ThatBlokeCalledJay)  
   
 > Note: AutoAppVersion has been designed initially to work with Azure DevOps pipelines and DotNet Core projects.
 
