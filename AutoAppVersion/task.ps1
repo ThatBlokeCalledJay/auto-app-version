@@ -28,7 +28,7 @@ $SetFileVersion = ConvertTo-Boolean($SetFileVersionString)
 $StopOnNoMaskString = Get-VstsInput -Name StopOnNoMask  -Require
 $StopOnNoMask = ConvertTo-Boolean ($StopOnNoMaskString)
 
-$StopOnDowngradeString = Get-VstsInput -Name StopOnDowngrade  -Require
+$StopOnDowngradeString = Get-VstsInput -Name StopOnDowngrade -Require
 $StopOnDowngrade = ConvertTo-Boolean($StopOnDowngradeString)
 
 $StopOnInvalidEVarNameString = Get-VstsInput -Name StopOnInvalidEVarName  -Require
