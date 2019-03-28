@@ -39,7 +39,7 @@ $EnvironmentVariableName= Get-VstsInput -Name EnvVarName
 $VersionMaskOverride = Get-VstsInput -Name VersionMaskOverride
 
 $devOpsUri = $env:SYSTEM_TEAMFOUNDATIONSERVERURI
-$projectName = $env:SYSTEM_TEAMPROJECT
+$projectName = [uri]::EscapeUriString($env:SYSTEM_TEAMPROJECT)
 $projectId = $env:SYSTEM_TEAMPROJECTID 
 $buildId = $env:BUILD_BUILDID
 
